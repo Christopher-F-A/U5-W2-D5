@@ -1,6 +1,7 @@
 package christopherfa.U5_W2_D5.controllers;
 
 import christopherfa.U5_W2_D5.entities.Viaggio;
+import christopherfa.U5_W2_D5.enums.StatoViaggio;
 import christopherfa.U5_W2_D5.repositories.ViaggioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +31,12 @@ public class ViaggioController {
         List<Viaggio> lista = viaggioRepo.findAll();
         log.info("Viaggi trovati: " + lista.size() + " elementi.");
         return lista;
+    }
+
+    @PatchMapping("/{id}/stato")
+    public Viaggio updateStato(@PathVariable Long id, @RequestBody String nuovoStato) {
+        Viaggio v = viaggioRepo.findById(id).get();
+        v.setStato(StatoViaggio.valueOf(nuovoStato));
+        return viaggioRepo.save(v);
     }
 }
